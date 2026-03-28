@@ -2,8 +2,8 @@
 
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
-import { ProductCard } from '@/components/product-card'
 import { ProductCarousel } from '@/components/product-carousel'
+import { siteBrand, whyChooseUs } from '@/lib/site-content'
 import Link from 'next/link'
 
 export default function Home() {
@@ -54,10 +54,10 @@ export default function Home() {
         </div>
         <div className="relative z-10 text-center max-w-3xl mx-auto px-4">
           <h1 className="text-5xl md:text-6xl font-serif font-bold text-background mb-4 text-balance">
-            Sridha Candles
+            {siteBrand.heroTitle}
           </h1>
           <p className="text-xl text-background/80 mb-8 text-balance">
-            Handcrafted candles made with premium natural ingredients. Transform your space with our carefully curated collection.
+            {siteBrand.heroSubtitle}
           </p>
           <Link
             href="/products"
@@ -80,45 +80,22 @@ export default function Home() {
       <section className="bg-secondary py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-serif font-bold text-foreground text-center mb-12">
-            Why Choose Sridha Candles?
+            Why Choose Us
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6 rounded-lg bg-background/50 border border-border hover:border-accent/50 transition-colors">
-              <div className="w-16 h-16 bg-accent text-accent-foreground rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-                🕯️
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {whyChooseUs.map((item) => (
+              <div
+                key={item.title}
+                className="text-center p-6 rounded-lg bg-background/50 border border-border hover:border-accent/50 transition-colors"
+              >
+                <div className="w-16 h-16 bg-accent text-accent-foreground rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                  {item.icon}
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-2">{item.title}</h3>
+                <p className="text-muted-foreground">{item.body}</p>
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">
-                Premium Quality
-              </h3>
-              <p className="text-muted-foreground">
-                Handcrafted with 100% natural ingredients and eco-friendly wicks.
-              </p>
-            </div>
-
-            <div className="text-center p-6 rounded-lg bg-background/50 border border-border hover:border-accent/50 transition-colors">
-              <div className="w-16 h-16 bg-accent text-accent-foreground rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-                🌿
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">
-                Eco-Friendly
-              </h3>
-              <p className="text-muted-foreground">
-                Sustainable packaging and ethically sourced natural waxes.
-              </p>
-            </div>
-
-            <div className="text-center p-6 rounded-lg bg-background/50 border border-border hover:border-accent/50 transition-colors">
-              <div className="w-16 h-16 bg-accent text-accent-foreground rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-                ✨
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">
-                Long Lasting
-              </h3>
-              <p className="text-muted-foreground">
-                30+ hours of pure, consistent fragrance for your home.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>

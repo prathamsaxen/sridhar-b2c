@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { siteBrand, siteContact } from '@/lib/site-content'
 
 export function Footer() {
   return (
@@ -9,10 +10,8 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-xl font-serif font-bold mb-4">Shreedhar Candles</h3>
-            <p className="text-sm opacity-90">
-              Handcrafted candles made with premium natural ingredients for your home.
-            </p>
+            <h3 className="text-xl font-serif font-bold mb-4">{siteBrand.name}</h3>
+            <p className="text-sm opacity-90">{siteBrand.tagline}</p>
           </div>
 
           {/* Quick Links */}
@@ -52,8 +51,16 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="mailto:support@shreedharcandles.com" className="hover:opacity-80 transition-opacity">
-                  support@shreedharcandles.com
+                <Link href="/privacy" className="hover:opacity-80 transition-opacity">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${siteContact.email}`}
+                  className="hover:opacity-80 transition-opacity"
+                >
+                  {siteContact.email}
                 </a>
               </li>
             </ul>
@@ -83,15 +90,15 @@ export function Footer() {
 
         <div className="border-t border-opacity-20 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm opacity-90">
-            © 2024 Shreedhar Candles. All rights reserved.
+            © {new Date().getFullYear()} {siteBrand.name}. All rights reserved.
           </p>
           <div className="flex gap-6 mt-4 md:mt-0 text-sm">
             <Link href="/terms" className="hover:opacity-80 transition-opacity">
               Terms
             </Link>
-            <a href="#" className="hover:opacity-80 transition-opacity">
+            <Link href="/privacy" className="hover:opacity-80 transition-opacity">
               Privacy
-            </a>
+            </Link>
             <a href="#" className="hover:opacity-80 transition-opacity">
               Instagram
             </a>

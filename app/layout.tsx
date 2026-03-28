@@ -1,14 +1,14 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { siteMetadata } from '@/lib/site-content'
 import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Shreedhar Candles - Premium Handcrafted Candles',
-  description: 'Discover Shreedhar Candles collection of premium, handcrafted candles made with natural ingredients. Each candle is carefully crafted to bring warmth and ambiance to your home.',
+  ...siteMetadata,
   generator: 'v0.app',
   icons: {
     icon: [
