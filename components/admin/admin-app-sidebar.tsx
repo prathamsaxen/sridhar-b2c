@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Mail, Shield } from 'lucide-react'
+import { LayoutDashboard, Mail, MessageSquare, Shield } from 'lucide-react'
 
 import { AdminLogoutButton } from '@/components/admin/admin-logout-button'
 import {
@@ -67,6 +67,18 @@ export function AdminAppSidebar({ user }: Props) {
                   <Link href="/admin/dashboard/newsletter">
                     <Mail />
                     <span>Newsletter</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === '/admin/dashboard/leads'}
+                  tooltip="Contact leads"
+                >
+                  <Link href="/admin/dashboard/leads">
+                    <MessageSquare />
+                    <span>Leads</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

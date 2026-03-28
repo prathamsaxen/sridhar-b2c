@@ -39,6 +39,8 @@ export default function ContactPage() {
   const [formData, setFormData] = useState(initialForm)
   const [errors, setErrors] = useState<ContactErrors>({})
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [apiError, setApiError] = useState<string | null>(null)
 
   const clearFieldError = (field: ContactField) => {
     setErrors((prev) => {
@@ -86,18 +88,63 @@ export default function ContactPage() {
     })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setApiError(null)
     const nextErrors = validateContactForm(formData)
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length > 0) {
       return
     }
-    console.log('Form submitted:', formData)
-    setSubmitted(true)
-    setFormData(initialForm)
-    setErrors({})
-    setTimeout(() => setSubmitted(false), 5000)
+
+    setSubmitting(true)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      const data = (await res.json()) as {
+        ok?: boolean
+        message?: string
+        error?: string
+        fieldErrors?: Partial<Record<ContactField, string[]>>
+      }
+
+      if (res.status === 400 && data.fieldErrors) {
+        const serverErrors: ContactErrors = {}
+        const fields: ContactField[] = [
+          'name',
+          'email',
+          'mobile',
+          'subject',
+          'message',
+        ]
+        for (const f of fields) {
+          const msg = data.fieldErrors[f]?.[0]
+          if (msg) serverErrors[f] = msg
+        }
+        if (Object.keys(serverErrors).length > 0) {
+          setErrors(serverErrors)
+          return
+        }
+      }
+
+      if (!res.ok) {
+        setApiError(data.error ?? 'Something went wrong. Please try again.')
+        return
+      }
+
+      setSubmitted(true)
+      setFormData(initialForm)
+      setErrors({})
+      setTimeout(() => setSubmitted(false), 5000)
+    } catch {
+      setApiError('Network error. Please check your connection and try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -191,8 +238,17 @@ export default function ContactPage() {
           <h2 className="text-2xl font-serif font-bold text-foreground mb-6">Send us a Message</h2>
 
           {submitted && (
-            <div className="mb-6 p-4 bg-green-100 text-green-800 rounded">
-              Thank you for your message! We'll get back to you soon.
+            <div className="mb-6 p-4 bg-green-100 text-green-800 rounded dark:bg-emerald-950/40 dark:text-emerald-200">
+              Thank you for your message! We&apos;ll get back to you soon.
+            </div>
+          )}
+
+          {apiError && (
+            <div
+              className="mb-6 p-4 rounded border border-destructive/50 bg-destructive/10 text-destructive text-sm"
+              role="alert"
+            >
+              {apiError}
             </div>
           )}
 
@@ -289,9 +345,10 @@ export default function ContactPage() {
 
             <button
               type="submit"
-              className="w-full px-6 py-3 bg-primary text-primary-foreground font-semibold rounded hover:opacity-90 transition-opacity"
+              disabled={submitting}
+              className="w-full px-6 py-3 bg-primary text-primary-foreground font-semibold rounded hover:opacity-90 transition-opacity disabled:pointer-events-none disabled:opacity-50"
             >
-              Send Message
+              {submitting ? 'Sending…' : 'Send Message'}
             </button>
           </form>
         </div>
