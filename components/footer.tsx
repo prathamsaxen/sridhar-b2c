@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { NewsletterForm } from '@/components/newsletter-form'
 import { siteBrand, siteContact } from '@/lib/site-content'
 
 export function Footer() {
@@ -72,19 +73,7 @@ export function Footer() {
             <p className="text-sm opacity-90 mb-3">
               Subscribe to get special offers and new candle releases.
             </p>
-            <form className="flex flex-col gap-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="px-3 py-2 bg-background text-foreground text-sm rounded border border-border focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <button
-                type="submit"
-                className="px-3 py-2 bg-primary text-primary-foreground text-sm font-semibold rounded hover:opacity-90 transition-opacity"
-              >
-                Subscribe
-              </button>
-            </form>
+            <NewsletterForm />
           </div>
         </div>
 
